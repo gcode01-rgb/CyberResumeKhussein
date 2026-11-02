@@ -1,0 +1,1214 @@
+<!DOCTYPE html>
+<html lang="kk">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CYBER_RESUME // Киберпанк Интерактивті Портфолио</title>
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- FontAwesome Иконкалары -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <!-- Google Fonts: Orbitron, Share Tech Mono & Inter -->
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;800;900&family=Share+Tech+Mono&family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+  
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            cyber: {
+              bg: '#08090d',
+              card: '#0e111a',
+              cyan: '#00f3ff',
+              pink: '#ff0055',
+              green: '#0ff066',
+              yellow: '#ffe600',
+              dim: '#1a1f2c'
+            }
+          },
+          fontFamily: {
+            orbitron: ['Orbitron', 'sans-serif'],
+            mono: ['Share Tech Mono', 'monospace'],
+            sans: ['Inter', 'sans-serif']
+          }
+        }
+      }
+    }
+  </script>
+  
+  <style>
+    body {
+      background-color: #08090d;
+      color: #e2e8f0;
+      font-family: 'Share Tech Mono', monospace;
+      overflow-x: hidden;
+      transition: all 0.5s ease;
+    }
+
+    .bg-grid {
+      background-size: 40px 40px;
+      background-image: 
+        linear-gradient(to right, rgba(0, 243, 255, 0.04) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(0, 243, 255, 0.04) 1px, transparent 1px);
+    }
+
+    .glow-cyan {
+      text-shadow: 0 0 10px rgba(0, 243, 255, 0.7), 0 0 20px rgba(0, 243, 255, 0.4);
+    }
+    .glow-pink {
+      text-shadow: 0 0 10px rgba(255, 0, 85, 0.7), 0 0 20px rgba(255, 0, 85, 0.4);
+    }
+    .border-glow-cyan {
+      box-shadow: 0 0 15px rgba(0, 243, 255, 0.3);
+    }
+    .border-glow-pink {
+      box-shadow: 0 0 15px rgba(255, 0, 85, 0.3);
+    }
+
+    .glitch {
+      position: relative;
+      display: inline-block;
+    }
+    .glitch::before, .glitch::after {
+      content: attr(data-text);
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      clip: rect(0, 0, 0, 0);
+    }
+    .glitch::before {
+      left: -2px;
+      text-shadow: 2px 0 #ff0055;
+      animation: glitch-anim-1 2s infinite linear alternate-reverse;
+    }
+    .glitch::after {
+      left: 2px;
+      text-shadow: -2px 0 #00f3ff;
+      animation: glitch-anim-2 3s infinite linear alternate-reverse;
+    }
+
+    @keyframes glitch-anim-1 {
+      0% { clip: rect(20px, 9999px, 15px, 0); }
+      20% { clip: rect(60px, 9999px, 70px, 0); }
+      40% { clip: rect(10px, 9999px, 85px, 0); }
+      60% { clip: rect(40px, 9999px, 10px, 0); }
+      80% { clip: rect(80px, 9999px, 30px, 0); }
+      100% { clip: rect(30px, 9999px, 50px, 0); }
+    }
+    @keyframes glitch-anim-2 {
+      0% { clip: rect(10px, 9999px, 40px, 0); }
+      25% { clip: rect(50px, 9999px, 20px, 0); }
+      50% { clip: rect(30px, 9999px, 90px, 0); }
+      75% { clip: rect(70px, 9999px, 10px, 0); }
+      100% { clip: rect(20px, 9999px, 60px, 0); }
+    }
+
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #08090d;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #00f3ff;
+      border-radius: 3px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #ff0055;
+    }
+
+    .scanline {
+      position: fixed;
+      top: 0; left: 0; width: 100%; height: 100%;
+      background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%);
+      background-size: 100% 4px;
+      z-index: 99;
+      pointer-events: none;
+      opacity: 0.4;
+    }
+
+    .clip-corner {
+      clip-path: polygon(0 0, calc(100% - 15px) 0, 100% 15px, 100% 100%, 15px 100%, 0 calc(100% - 15px));
+    }
+    .clip-corner-sm {
+      clip-path: polygon(0 0, calc(100% - 8px) 0, 100% 8px, 100% 100%, 8px 100%, 0 calc(100% - 8px));
+    }
+
+    body.matrix-mode {
+      background-color: #050508 !important;
+      color: var(--matrix-color, #00ff66) !important;
+    }
+    body.matrix-mode .text-cyber-cyan,
+    body.matrix-mode .text-cyber-pink,
+    body.matrix-mode .text-cyber-yellow,
+    body.matrix-mode .text-cyber-green {
+      color: var(--matrix-color, #00ff66) !important;
+    }
+    body.matrix-mode .border-cyber-cyan,
+    body.matrix-mode .border-cyber-pink,
+    body.matrix-mode .border-cyber-yellow,
+    body.matrix-mode .border-cyber-green {
+      border-color: var(--matrix-color, #00ff66) !important;
+    }
+
+    @media print {
+      .no-print { display: none !important; }
+      body { background: white !important; color: black !important; font-family: sans-serif; }
+      .bg-grid { background-image: none !important; }
+      .glitch { text-shadow: none !important; }
+      .border-cyber-cyan, .border-cyber-pink { border-color: #ccc !important; }
+      .bg-cyber-card, .bg-cyber-bg { background: #fff !important; color: #000 !important; }
+      .text-cyber-cyan, .text-cyber-pink, .text-cyber-green { color: #000 !important; }
+    }
+  </style>
+</head>
+<body class="bg-grid min-h-screen relative pb-12 selection:bg-cyber-cyan selection:text-black">
+  <div class="scanline"></div>
+
+  <!-- HEADER -->
+  <header class="sticky top-0 z-40 bg-cyber-bg/90 backdrop-blur-md border-b border-cyber-cyan/30 px-4 py-3 no-print">
+    <div class="max-w-7xl mx-auto flex flex-wrap justify-between items-center gap-4">
+      <div class="flex items-center gap-3">
+        <div class="w-3 h-3 bg-cyber-green rounded-full animate-pulse"></div>
+        <span class="font-orbitron font-bold text-lg tracking-wider text-cyber-cyan">ЖҮЙЕ//КИБЕР_РЕЗЮМЕ_v4.2</span>
+      </div>
+
+      <div class="flex items-center gap-3">
+        <!-- 🌐 3 ТІЛДІ АУЫСТЫРУ БАТЫРМАЛАРЫ -->
+        <div class="flex border border-cyber-cyan/50 clip-corner-sm overflow-hidden text-xs font-bold">
+          <button id="lang-kk" onclick="setLanguage('kk')" class="px-2.5 py-1.5 bg-cyber-cyan text-black transition">ҚАЗ</button>
+          <button id="lang-ru" onclick="setLanguage('ru')" class="px-2.5 py-1.5 text-cyber-cyan hover:bg-cyber-cyan/20 transition border-l border-r border-cyber-cyan/30">РУС</button>
+          <button id="lang-en" onclick="setLanguage('en')" class="px-2.5 py-1.5 text-cyber-cyan hover:bg-cyber-cyan/20 transition">ENG</button>
+        </div>
+
+        <button id="soundToggleBtn" onclick="toggleAudio()" class="px-3 py-1.5 border border-cyber-cyan/50 text-cyber-cyan hover:bg-cyber-cyan/10 transition clip-corner-sm text-sm flex items-center gap-2">
+          <i id="soundIcon" class="fas fa-volume-up"></i>
+          <span id="soundText" class="hidden sm:inline">ДЫБЫС: ҚОСУЛЫ</span>
+        </button>
+
+        <button onclick="toggleEditDrawer()" class="px-3 py-1.5 border border-cyber-pink text-cyber-pink hover:bg-cyber-pink/10 transition clip-corner-sm text-sm flex items-center gap-2">
+          <i class="fas fa-edit"></i>
+          <span id="txt-btn-edit">РЕЗЮМЕНІ ӨҢДЕУ</span>
+        </button>
+
+        <button onclick="window.print()" class="px-3 py-1.5 bg-cyber-cyan text-black font-bold hover:bg-white transition clip-corner-sm text-sm flex items-center gap-2">
+          <i class="fas fa-file-pdf"></i>
+          <span id="txt-btn-pdf">PDF ТҮРІНДЕ ЖҮКТЕУ</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main class="max-w-7xl mx-auto px-4 pt-6 space-y-8">
+
+    <!-- HERO SECTION -->
+    <section class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      <div class="lg:col-span-2 bg-cyber-card border border-cyber-cyan/40 p-6 relative clip-corner border-glow-cyan flex flex-col justify-between">
+        <div class="flex justify-between items-start mb-4">
+          <span id="txt-secret-panel" class="text-xs text-cyber-cyan tracking-widest bg-cyber-cyan/10 px-2 py-1 border border-cyber-cyan/30">
+            [ ҚҰПИЯ ДЕРЕКТЕР ПАНЕЛІ ]
+          </span>
+          <span id="txt-ready-status" class="text-xs text-cyber-green flex items-center gap-1 font-bold">
+            <span class="w-2 h-2 rounded-full bg-cyber-green animate-ping"></span> ЖҰМЫСҚА ДАЙЫН
+          </span>
+        </div>
+
+        <div class="flex flex-col sm:flex-row gap-6 items-center sm:items-start mb-6">
+          <div class="relative group">
+            <div class="w-32 h-32 border-2 border-cyber-cyan p-1 clip-corner relative overflow-hidden bg-cyber-dim">
+              <img id="displayAvatar" src="abo.JPG" alt="Аватар" class="w-full h-full object-cover filter contrast-125 saturate-150">
+              <div class="absolute inset-0 bg-cyber-cyan/10 opacity-0 group-hover:opacity-100 transition pointer-events-none"></div>
+            </div>
+            <div class="absolute -bottom-2 -right-2 bg-cyber-pink text-white text-xs px-2 py-0.5 font-bold font-orbitron">
+              <span id="txt-lvl-label">ДЕҢГЕЙ</span> <span id="displayLvl">99</span>
+            </div>
+          </div>
+
+          <div class="flex-1 text-center sm:text-left space-y-2">
+            <h1 id="displayName" class="font-orbitron font-extrabold text-3xl sm:text-4xl text-white tracking-wide glitch" data-text="МҰХАММЕД ХУСЕЙН АБДУРАХМАН">
+              МҰХАММЕД ХУСЕЙН АБДУРАХМАН
+            </h1>
+            <p id="displayTitle" class="text-cyber-cyan font-semibold tracking-wider text-base sm:text-lg">
+              STUDENT UNIVERSITY OF TASHENEV & COMPUTER SCIENCE
+            </p>
+            <p id="displayBio" class="text-gray-400 text-sm leading-relaxed pt-2 border-t border-gray-800">
+              (Болашақ) Интерактивті веб-қосымшалар, Алгоритмдер мен жүйелерді жобалау, Ғылыми-зерттеу және жобалау жұмыстары және жоғары жүктемелі жүйелерді әзірлеуге маманданған бағдарламашы.
+            </p>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 pt-4 border-t border-cyber-cyan/20 text-xs">
+          <a id="linkEmail" href="mailto:abokhusein@gmail.com" class="p-2 border border-gray-800 hover:border-cyber-cyan text-gray-300 hover:text-cyber-cyan transition flex items-center justify-center gap-2 truncate">
+            <i class="fas fa-envelope text-cyber-cyan"></i> <span id="displayEmail">abokhusein@gmail.com</span>
+          </a>
+          <a id="linkPhone" href="tel:+77066200772" class="p-2 border border-gray-800 hover:border-cyber-cyan text-gray-300 hover:text-cyber-cyan transition flex items-center justify-center gap-2 truncate">
+            <i class="fas fa-phone text-cyber-cyan"></i> <span id="displayPhone">+7 (706) 620-0772</span>
+          </a>
+          <a id="linkLocation" href="#" class="p-2 border border-gray-800 hover:border-cyber-cyan text-gray-300 hover:text-cyber-cyan transition flex items-center justify-center gap-2 truncate">
+            <i class="fas fa-map-marker-alt text-cyber-cyan"></i> <span id="displayLocation">Шымкент, Қазақстан</span>
+          </a>
+          <a id="linkGithub" href="https://github.com/gcode01-rgb" target="_blank" class="p-2 border border-gray-800 hover:border-cyber-pink text-gray-300 hover:text-cyber-pink transition flex items-center justify-center gap-2 truncate">
+            <i class="fab fa-github text-cyber-pink"></i> <span>GITHUB</span>
+          </a>
+        </div>
+      </div>
+
+      <!-- RPG STATS -->
+      <div class="bg-cyber-card border border-cyber-pink/40 p-6 clip-corner border-glow-pink flex flex-col justify-between space-y-4">
+        <div class="border-b border-cyber-pink/30 pb-2 flex justify-between items-center">
+          <h2 id="txt-hero-stats-title" class="font-orbitron font-bold text-cyber-pink tracking-wider flex items-center gap-2">
+            <i class="fas fa-shield-halved"></i> КЕЙІПКЕР СТАТИСТИКАСЫ
+          </h2>
+          <span class="text-xs text-gray-400">КЛАСС: ARCHITECT</span>
+        </div>
+
+        <div class="space-y-3 text-xs">
+          <div>
+            <div class="flex justify-between mb-1">
+              <span id="txt-hp-label" class="text-gray-300 flex items-center gap-1"><i class="fas fa-heart text-cyber-pink"></i> ЭНЕРГИЯ (HP)</span>
+              <span class="text-cyber-pink font-bold">100 / 100</span>
+            </div>
+            <div class="w-full h-2 bg-gray-900 border border-cyber-pink/40 p-0.5">
+              <div class="h-full bg-cyber-pink w-full"></div>
+            </div>
+          </div>
+
+          <div>
+            <div class="flex justify-between mb-1">
+              <span id="txt-coffee-label" class="text-gray-300 flex items-center gap-1"><i class="fas fa-coffee text-cyber-cyan"></i> КОФЕ МӨЛШЕРІ (МАНА)</span>
+              <span id="displayManaVal" class="text-cyber-cyan font-bold">96%</span>
+            </div>
+            <div class="w-full h-2 bg-gray-900 border border-cyber-cyan/40 p-0.5">
+              <div id="displayManaBar" class="h-full bg-cyber-cyan w-[96%] transition-all duration-500"></div>
+            </div>
+          </div>
+
+          <div>
+            <div class="flex justify-between mb-1">
+              <span id="txt-xp-label" class="text-gray-300 flex items-center gap-1"><i class="fas fa-bolt text-cyber-yellow"></i> ТӘЖІРИБЕ ҰПАЙЛАРЫ</span>
+              <span class="text-cyber-yellow font-bold">9,200 / 10,000 XP</span>
+            </div>
+            <div class="w-full h-2 bg-gray-900 border border-cyber-yellow/40 p-0.5">
+              <div class="h-full bg-cyber-yellow w-[92%]"></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-2 gap-2 text-xs pt-3 border-t border-gray-800">
+          <div class="bg-cyber-dim p-2 border border-gray-800">
+            <span id="txt-stat-problem" class="text-gray-500 block">ПРОБЛЕМАЛАРДЫ ШЕШУ</span>
+            <span class="text-white font-bold text-sm">98 / 100</span>
+          </div>
+          <div class="bg-cyber-dim p-2 border border-gray-800">
+            <span id="txt-stat-clean" class="text-gray-500 block">КОД ТАЗАЛЫҒЫ</span>
+            <span class="text-white font-bold text-sm">95 / 100</span>
+          </div>
+          <div class="bg-cyber-dim p-2 border border-gray-800">
+            <span id="txt-stat-arch" class="text-gray-500 block">ЖҮЙЕЛІК АРХИТЕКТУРА</span>
+            <span class="text-white font-bold text-sm">94 / 100</span>
+          </div>
+          <div class="bg-cyber-dim p-2 border border-gray-800">
+            <span id="txt-stat-debug" class="text-gray-500 block">ОТЛАДКА ЖЫЛДАМДЫҒЫ</span>
+            <span class="text-white font-bold text-sm">96 / 100</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CONTENT SECTION -->
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+
+      <div class="space-y-6">
+        <!-- SKILLS -->
+        <div class="bg-cyber-card border border-cyber-cyan/30 p-5 clip-corner space-y-4">
+          <h2 class="font-orbitron font-bold text-xl text-cyber-cyan border-b border-cyber-cyan/30 pb-2 flex items-center justify-between">
+            <span id="txt-skills-title"><i class="fas fa-code text-cyber-cyan mr-2"></i> ДАҒДЫЛАР</span>
+            <span class="text-xs text-gray-500 font-normal">КИБЕР_ПАНЕЛЬ</span>
+          </h2>
+          <div id="skillsContainer" class="space-y-3"></div>
+        </div>
+
+        <!-- EDUCATION -->
+        <div class="bg-cyber-card border border-cyber-cyan/30 p-5 clip-corner space-y-4">
+          <h2 id="txt-edu-title" class="font-orbitron font-bold text-xl text-cyber-cyan border-b border-cyber-cyan/30 pb-2 flex items-center gap-2">
+            <i class="fas fa-graduation-cap"></i> БІЛІМ ЖӘНЕ ЖЕТІСТІКТЕР
+          </h2>
+          <div id="educationContainer" class="space-y-4"></div>
+        </div>
+      </div>
+
+      <div class="lg:col-span-2 space-y-6">
+        <!-- EXPERIENCE -->
+        <div class="bg-cyber-card border border-cyber-pink/30 p-5 clip-corner space-y-6">
+          <h2 class="font-orbitron font-bold text-xl text-cyber-pink border-b border-cyber-pink/30 pb-2 flex items-center justify-between">
+            <span id="txt-exp-title"><i class="fas fa-briefcase text-cyber-pink mr-2"></i> ЖҰМЫС ТӘЖІРИБЕСІ</span>
+            <span id="txt-time-log" class="text-xs text-gray-500 font-normal">УАҚЫТ_ЖАЗБАСЫ</span>
+          </h2>
+          <div id="experienceContainer" class="space-y-6 relative before:absolute before:left-3 before:top-2 before:bottom-2 before:w-0.5 before:bg-cyber-pink/30 pl-8"></div>
+        </div>
+
+        <!-- PROJECTS -->
+        <div class="bg-cyber-card border border-cyber-green/30 p-5 clip-corner space-y-4">
+          <div class="flex flex-wrap justify-between items-center gap-2 border-b border-cyber-green/30 pb-2">
+            <h2 id="txt-projects-title" class="font-orbitron font-bold text-xl text-cyber-green flex items-center gap-2">
+              <i class="fas fa-project-diagram"></i> ЖОБАЛАР
+            </h2>
+            <div id="projectFilters" class="flex gap-2 text-xs">
+              <button onclick="filterProjects('all')" class="px-2 py-1 border border-cyber-green text-cyber-green bg-cyber-green/10 font-bold clip-corner-sm hover:bg-cyber-green hover:text-black transition">BARLYGY</button>
+              <button onclick="filterProjects('web')" class="px-2 py-1 border border-gray-700 text-gray-400 hover:text-cyber-green clip-corner-sm transition">WEB</button>
+              <button onclick="filterProjects('ai')" class="px-2 py-1 border border-gray-700 text-gray-400 hover:text-cyber-green clip-corner-sm transition">AI / SECURITY</button>
+            </div>
+          </div>
+          <div id="projectsContainer" class="grid grid-cols-1 md:grid-cols-2 gap-4"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- REVIEWS SECTION -->
+    <section class="bg-cyber-card border border-cyber-yellow/30 p-5 clip-corner space-y-4">
+      <h2 id="txt-reviews-title" class="font-orbitron font-bold text-xl text-cyber-yellow border-b border-cyber-yellow/30 pb-2 flex items-center gap-2">
+        <i class="fas fa-star"></i> ТАПСЫРЫСШЫЛАР МЕН КЛИЕНТТЕРДІҢ ПІКІРЛЕРІ
+      </h2>
+      <div id="reviewsContainer" class="grid grid-cols-1 md:grid-cols-2 gap-4"></div>
+    </section>
+
+    <!-- 🎮 CYBER ARCADE // КИБЕР ОЙЫНДАР АЛАҢЫ -->
+    <div class="space-y-6 pt-4 border-t border-cyber-cyan/30">
+      <div class="flex items-center gap-3">
+        <div class="w-3 h-3 bg-cyber-yellow rounded-full animate-ping"></div>
+        <h2 id="txt-arcade-title" class="font-orbitron font-extrabold text-xl text-cyber-yellow tracking-wider">
+          🎮 CYBER ARCADE // КИБЕР ОЙЫНДАР АЛАҢЫ
+        </h2>
+      </div>
+
+      <!-- GAME 1: TYPING GAME SECTION -->
+      <section class="bg-cyber-card border border-cyber-yellow/40 p-5 clip-corner space-y-3 border-glow-pink">
+        <div class="flex flex-wrap justify-between items-center border-b border-gray-800 pb-2">
+          <h2 id="txt-g1-title" class="font-orbitron font-bold text-lg text-cyber-yellow flex items-center gap-2">
+            <i class="fas fa-keyboard"></i> 1. CYBER TYPING TEST // КОД ТЕРУ ЖЫЛДАМДЫҒЫ
+          </h2>
+          <span id="txt-g1-sub" class="text-xs text-gray-400">IT ТЕРМИНДЕРІН МҮЛТИКСІЗ ТЕРІП ҮЛГЕРІҢІЗ</span>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 items-center">
+          <div class="bg-cyber-dim p-4 border border-gray-800 text-center space-y-1">
+            <div class="text-xs text-gray-400"><span id="txt-g1-time">УАҚЫТ</span>: <span id="gameTimer" class="text-cyber-yellow font-bold text-base">30s</span></div>
+            <div class="text-xs text-gray-400"><span id="txt-g1-speed">ЖЫЛДАМДЫҚ</span>: <span id="gameWpm" class="text-cyber-cyan font-bold text-base">0 WPM</span></div>
+            <div class="text-xs text-gray-400"><span id="txt-g1-acc">ДӘЛДІК</span>: <span id="gameAccuracy" class="text-cyber-green font-bold text-base">100%</span></div>
+          </div>
+
+          <div class="md:col-span-2 space-y-3">
+            <div id="wordDisplay" class="bg-black/70 p-3 border border-cyber-yellow/30 text-cyber-yellow font-mono text-sm tracking-widest min-h-[48px] flex items-center justify-center font-bold">
+              Ойынды бастау үшін «30 СЕК ОЙЫНДЫ БАСТАУ» батырмасын басыңыз!
+            </div>
+            <div class="flex gap-2">
+              <input type="text" id="gameInput" disabled autocomplete="off" placeholder="..." oninput="checkGameInput()" class="w-full bg-cyber-dim border border-gray-700 p-2 text-white font-mono text-xs focus:border-cyber-yellow outline-none disabled:opacity-50">
+              <button id="startGameBtn" onclick="startTypingGame()" class="px-4 py-2 bg-cyber-yellow text-black font-bold clip-corner-sm hover:bg-white transition text-xs whitespace-nowrap">
+                30 СЕК ОЙЫНДЫ БАСТАУ
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- GAME 2: CYBER NUMBER GUESSER -->
+      <section class="bg-cyber-card border border-cyber-cyan/40 p-5 clip-corner space-y-4 border-glow-cyan">
+        <div class="flex flex-wrap justify-between items-center border-b border-gray-800 pb-2">
+          <h2 id="txt-g2-title" class="font-orbitron font-bold text-lg text-cyber-cyan flex items-center gap-2">
+            <i class="fas fa-bullseye"></i> 2. CYBER NUMBER GUESSER // САНДЫ ТАБУ (1-100)
+          </h2>
+          <span id="txt-g2-sub" class="text-xs text-gray-400">1 МЕН 100 АРАСЫНДАҒЫ САНДЫ ТАБЫҢЫЗ (ЛИМИТ ЖОҚ)</span>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div class="bg-cyber-dim p-4 border border-gray-800 flex flex-col justify-between items-center text-center space-y-2">
+            <div class="text-xs text-gray-400"><span id="txt-g2-attempts">ЖАСАЛҒАН ӘРЕКЕТ САНЫ</span>: <span id="codeAttemptsCount" class="text-cyber-yellow font-bold text-lg">0</span></div>
+            <div id="codeStatus" class="text-xs text-cyber-cyan font-bold tracking-wider">СТАТУС: ІЗДЕУ ЖҮРҮДЕ</div>
+            <button id="txt-g2-btn-new" onclick="initCodeBreaker()" class="w-full py-2 border border-cyber-cyan text-cyber-cyan hover:bg-cyber-cyan hover:text-black transition text-xs clip-corner-sm font-bold">
+              ЖАҢА САН БАСТАУ
+            </button>
+          </div>
+
+          <div class="md:col-span-2 space-y-3">
+            <div id="codeHistory" class="bg-black/70 p-3 border border-gray-800 font-mono text-xs h-28 overflow-y-auto space-y-1">
+              <p class="text-gray-500">> Жүйе 1 мен 100 аралығында сан жасырылды...</p>
+            </div>
+
+            <form onsubmit="guessCode(event)" class="flex gap-2">
+              <input type="number" id="codeGuessInput" min="1" max="100" placeholder="1-100..." class="w-full bg-cyber-dim border border-gray-700 p-2 text-white font-mono text-xs focus:border-cyber-cyan outline-none text-center tracking-widest font-bold">
+              <button id="txt-g2-btn-check" type="submit" class="px-6 py-2 bg-cyber-cyan text-black font-bold clip-corner-sm hover:bg-white transition text-xs whitespace-nowrap">
+                ТЕКСЕРУ
+              </button>
+            </form>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <!-- TERMINAL -->
+    <section class="bg-cyber-card border border-cyber-cyan/40 p-4 clip-corner no-print border-glow-cyan space-y-2">
+      <div class="flex justify-between items-center border-b border-gray-800 pb-2">
+        <div id="txt-term-title" class="flex items-center gap-2 text-xs text-cyber-cyan font-orbitron">
+          <i class="fas fa-terminal"></i> ИНТЕРАКТИВТІ КИБЕР-ТЕРМИНАЛ
+        </div>
+        <span id="txt-term-help" class="text-xs text-gray-500">КОМАНДАЛАР ТІЗІМІ ҮШІН 'help' ТЕРІҢІЗ</span>
+      </div>
+
+      <div id="terminalOutput" class="h-40 overflow-y-auto font-mono text-xs space-y-1 p-2 bg-black/60 border border-gray-900 text-gray-300">
+        <p id="txt-term-init" class="text-cyber-green">> КИБЕР_РЕЗЮМЕ ЖҮЙЕСІ ИНИЦИАЛИЗАЦИЯЛАНДЫ v4.2...</p>
+        <p id="txt-term-sub" class="text-gray-400">> Қолжетімді командаларды көру үшін <span class="text-cyber-yellow">'help'</span> теріңіз.</p>
+      </div>
+
+      <form id="terminalForm" onsubmit="handleTerminalCommand(event)" class="flex gap-2 items-center">
+        <span class="text-cyber-pink font-bold text-sm">guest@cyber-resume:~$</span>
+        <input type="text" id="terminalInput" autocomplete="off" placeholder="..." class="w-full bg-transparent border-none text-cyber-cyan focus:outline-none text-xs font-mono">
+        <button id="txt-term-run" type="submit" class="px-3 py-1 bg-cyber-cyan/20 text-cyber-cyan border border-cyber-cyan/50 text-xs hover:bg-cyber-cyan hover:text-black transition clip-corner-sm">
+          ОРЫНДАУ
+        </button>
+      </form>
+    </section>
+
+  </main>
+
+  <!-- EDIT DRAWER MODAL -->
+  <div id="editModal" class="fixed inset-0 bg-black/80 backdrop-blur-md z-50 hidden flex justify-end transition-opacity duration-300">
+    <div class="w-full max-w-2xl bg-cyber-card border-l border-cyber-pink h-full p-6 overflow-y-auto space-y-6">
+      <div class="flex justify-between items-center border-b border-cyber-pink/40 pb-4">
+        <h2 id="txt-modal-title" class="font-orbitron font-bold text-2xl text-cyber-pink flex items-center gap-2">
+          <i class="fas fa-sliders-h"></i> РЕЗЮМЕНІ МӘЛІМЕТТЕРІН ӨҢДЕУ
+        </h2>
+        <button onclick="toggleEditDrawer()" class="text-gray-400 hover:text-cyber-pink text-xl">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+
+      <div class="space-y-4 text-xs font-mono">
+        <div class="space-y-2 border-b border-gray-800 pb-4">
+          <h3 id="txt-modal-personal" class="text-cyber-cyan font-bold text-sm">ЖЕКЕ МӘЛІМЕТТЕР</h3>
+          <div class="grid grid-cols-2 gap-3">
+            <div>
+              <label id="txt-modal-name" class="block text-gray-400 mb-1">Аты-жөні</label>
+              <input type="text" id="editName" class="w-full bg-cyber-dim border border-gray-700 p-2 text-white focus:border-cyber-cyan outline-none">
+            </div>
+            <div>
+              <label id="txt-modal-job" class="block text-gray-400 mb-1">Мамандығы / Лауазымы</label>
+              <input type="text" id="editTitle" class="w-full bg-cyber-dim border border-gray-700 p-2 text-white focus:border-cyber-cyan outline-none">
+            </div>
+          </div>
+          <div>
+            <label id="txt-modal-bio" class="block text-gray-400 mb-1">Өзі туралы қысқаша ақпарат</label>
+            <textarea id="editBio" rows="3" class="w-full bg-cyber-dim border border-gray-700 p-2 text-white focus:border-cyber-cyan outline-none"></textarea>
+          </div>
+          <div class="grid grid-cols-3 gap-3">
+            <div>
+              <label id="txt-modal-email" class="block text-gray-400 mb-1">Электронды пошта</label>
+              <input type="text" id="editEmail" class="w-full bg-cyber-dim border border-gray-700 p-2 text-white focus:border-cyber-cyan outline-none">
+            </div>
+            <div>
+              <label id="txt-modal-phone" class="block text-gray-400 mb-1">Телефон</label>
+              <input type="text" id="editPhone" class="w-full bg-cyber-dim border border-gray-700 p-2 text-white focus:border-cyber-cyan outline-none">
+            </div>
+            <div>
+              <label id="txt-modal-loc" class="block text-gray-400 mb-1">Мекенжайы</label>
+              <input type="text" id="editLocation" class="w-full bg-cyber-dim border border-gray-700 p-2 text-white focus:border-cyber-cyan outline-none">
+            </div>
+          </div>
+        </div>
+
+        <div class="space-y-2 border-b border-gray-800 pb-4">
+          <h3 id="txt-modal-skills" class="text-cyber-cyan font-bold text-sm">ДАҒДЫЛАР (Атауы:Пайызы, Үтірмен бөліңіз)</h3>
+          <input type="text" id="editSkillsRaw" class="w-full bg-cyber-dim border border-gray-700 p-2 text-white focus:border-cyber-cyan outline-none">
+        </div>
+
+        <div class="space-y-2">
+          <h3 id="txt-modal-exp" class="text-cyber-cyan font-bold text-sm">ЖҰМЫС ТӘЖІРИБЕСІ (JSON)</h3>
+          <textarea id="editExperienceRaw" rows="6" class="w-full bg-cyber-dim border border-gray-700 p-2 text-white focus:border-cyber-cyan outline-none font-mono text-xs"></textarea>
+        </div>
+
+        <div class="pt-4 flex justify-end gap-3">
+          <button id="txt-modal-cancel" onclick="toggleEditDrawer()" class="px-4 py-2 border border-gray-700 text-gray-300 hover:bg-gray-800">БАС ТАРТУ</button>
+          <button id="txt-modal-save" onclick="saveResumeData()" class="px-6 py-2 bg-cyber-pink text-white font-bold hover:bg-white hover:text-black transition clip-corner-sm">
+            САҚТАУ ЖӘНЕ ЖАҢАРТУ
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    let currentLang = 'kk';
+
+    // 🌐 3 ТІЛДІК СӨЗДІК
+    const i18n = {
+      kk: {
+        soundOn: "ДЫБЫС: ҚОСУЛЫ", soundOff: "ДЫБЫС: ӨШІРУЛІ",
+        btnEdit: "РЕЗЮМЕНІ ӨҢДЕУ", btnPdf: "PDF ТҮРІНДЕ ЖҮКТЕУ",
+        secretPanel: "[ ҚҰПИЯ ДЕРЕКТЕР ПАНЕЛІ ]", readyStatus: "ЖҰМЫСҚА ДАЙЫН",
+        lvlLabel: "ДЕҢГЕЙ", heroStatsTitle: '<i class="fas fa-shield-halved"></i> КЕЙІПКЕР СТАТИСТИКАСЫ',
+        hpLabel: '<i class="fas fa-heart text-cyber-pink"></i> ЭНЕРГИЯ (HP)',
+        coffeeLabel: '<i class="fas fa-coffee text-cyber-cyan"></i> КОФЕ МӨЛШЕРІ (МАНА)',
+        xpLabel: '<i class="fas fa-bolt text-cyber-yellow"></i> ТӘЖІРИБЕ ҰПАЙЛАРЫ',
+        statProblem: "ПРОБЛЕМАЛАРДЫ ШЕШУ", statClean: "КОД ТАЗАЛЫҒЫ", statArch: "ЖҮЙЕЛІК АРХИТЕКТУРА", statDebug: "ОТЛАДКА ЖЫЛДАМДЫҒЫ",
+        skillsTitle: '<i class="fas fa-code text-cyber-cyan mr-2"></i> ДАҒДЫЛАР',
+        eduTitle: '<i class="fas fa-graduation-cap"></i> БІЛІМ ЖӘНЕ ЖЕТІСТІКТЕР',
+        expTitle: '<i class="fas fa-briefcase text-cyber-pink mr-2"></i> ЖҰМЫС ТӘЖІРИБЕСІ', timeLog: "УАҚЫТ_ЖАЗБАСЫ",
+        projectsTitle: '<i class="fas fa-project-diagram"></i> ЖОБАЛАР',
+        reviewsTitle: '<i class="fas fa-star"></i> ТАПСЫРЫСШЫЛАР МЕН КЛИЕНТТЕРДІҢ ПІКІРЛЕРІ',
+        arcadeTitle: "🎮 CYBER ARCADE // КИБЕР ОЙЫНДАР АЛАҢЫ",
+        g1Title: '<i class="fas fa-keyboard"></i> 1. CYBER TYPING TEST // КОД ТЕРУ ЖЫЛДАМДЫҒЫ', g1Sub: "IT ТЕРМИНДЕРІН МҮЛТИКСІЗ ТЕРІП ҮЛГЕРІҢІЗ",
+        g1Time: "УАҚЫТ", g1Speed: "ЖЫЛДАМДЫҚ", g1Acc: "ДӘЛДІК", g1StartText: "Ойынды бастау үшін «30 СЕК ОЙЫНДЫ БАСТАУ» батырмасын басыңыз!", g1StartBtn: "30 СЕК ОЙЫНДЫ БАСТАУ", g1Placeholder: "Осы жерге теріңіз...",
+        g2Title: '<i class="fas fa-bullseye"></i> 2. CYBER NUMBER GUESSER // САНДЫ ТАБУ (1-100)', g2Sub: "1 МЕН 100 АРАСЫНДАҒЫ САНДЫ ТАБЫҢЫЗ (ЛИМИТ ЖОҚ)",
+        g2Attempts: "ЖАСАЛҒАН ӘРЕКЕТ САНЫ", g2StatusSearch: "СТАТУС: ІЗДЕУ ЖҮРҮДЕ", g2BtnNew: "ЖАҢА САН БАСТАУ", g2HistInit: "> Жүйе 1 мен 100 аралығында сан жасырды...", g2Placeholder: "1-100 арасындағы сан...", g2BtnCheck: "ТЕКСЕРУ",
+        termTitle: '<i class="fas fa-terminal"></i> ИНТЕРАКТИВТІ КИБЕР-ТЕРМИНАЛ', termHelp: "КОМАНДАЛАР ТІЗІМІ ҮШІН 'help' ТЕРІҢІЗ", termInit: "> КИБЕР_РЕЗЮМЕ ЖҮЙЕСІ ИНИЦИАЛИЗАЦИЯЛАНДЫ v4.2...", termSub: "> Қолжетімді командаларды көру үшін 'help' теріңіз.", termPlaceholder: "Команда енгізіңіз...", termRun: "ОРЫНДАУ",
+        btnGoSite: "САЙТҚА ӨТУ",
+        modalTitle: '<i class="fas fa-sliders-h"></i> РЕЗЮМЕНІ МӘЛІМЕТТЕРІН ӨҢДЕУ', modalPersonal: "ЖЕКЕ МӘЛІМЕТТЕР", modalName: "Аты-жөні", modalJob: "Мамандығы / Лауазымы", modalBio: "Өзі туралы қысқаша ақпарат", modalEmail: "Электронды пошта", modalPhone: "Телефон", modalLoc: "Мекенжайы", modalSkills: "ДАҒДЫЛАР (Атауы:Пайызы, Үтірмен бөліңіз)", modalExp: "ЖҰМЫС ТӘЖІРИБЕСІ (JSON)", modalCancel: "БАС ТАРТУ", modalSave: "САҚТАУ ЖӘНЕ ЖАҢАРТУ"
+      },
+      ru: {
+        soundOn: "ЗВУК: ВКЛ", soundOff: "ЗВУК: ВЫКЛ",
+        btnEdit: "РЕДАКТИРОВАТЬ", btnPdf: "СКАЧАТЬ PDF",
+        secretPanel: "[ ПАНЕЛЬ СЕКРЕТНЫХ ДАННЫХ ]", readyStatus: "ГОТОВ К РАБОТЕ",
+        lvlLabel: "УРОВЕНЬ", heroStatsTitle: '<i class="fas fa-shield-halved"></i> СТАТИСТИКА ПЕРСОНАЖА',
+        hpLabel: '<i class="fas fa-heart text-cyber-pink"></i> ЭНЕРГИЯ (HP)',
+        coffeeLabel: '<i class="fas fa-coffee text-cyber-cyan"></i> УРОВЕНЬ КОФЕ (МАНА)',
+        xpLabel: '<i class="fas fa-bolt text-cyber-yellow"></i> ОЧКИ ОПЫТА (XP)',
+        statProblem: "РЕШЕНИЕ ЗАДАЧ", statClean: "ЧИСТОТА КОДА", statArch: "АРХИТЕКТУРА СИСТЕМ", statDebug: "СКОРОСТЬ ОТЛАДКИ",
+        skillsTitle: '<i class="fas fa-code text-cyber-cyan mr-2"></i> НАВЫКИ',
+        eduTitle: '<i class="fas fa-graduation-cap"></i> ОБРАЗОВАНИЕ И ДОСТИЖЕНИЯ',
+        expTitle: '<i class="fas fa-briefcase text-cyber-pink mr-2"></i> ОПЫТ РАБОТЫ', timeLog: "ХРОНОЛОГИЯ",
+        projectsTitle: '<i class="fas fa-project-diagram"></i> ПРОЕКТЫ',
+        reviewsTitle: '<i class="fas fa-star"></i> ОТЗЫВЫ КЛИЕНТОВ И ЗАКАЗЧИКОВ',
+        arcadeTitle: "🎮 CYBER ARCADE // КИБЕР АРКАДА",
+        g1Title: '<i class="fas fa-keyboard"></i> 1. CYBER TYPING TEST // СКОРОСТЬ ПЕЧАТИ КОДА', g1Sub: "ПЕЧАТАЙТЕ IT-ТЕРМИНЫ БЕЗ ОШИБОК",
+        g1Time: "ВРЕМЯ", g1Speed: "СКОРОСТЬ", g1Acc: "ТОЧНОСТЬ", g1StartText: "Нажмите «НАЧАТЬ 30 СЕК ИГРУ», чтобы начать!", g1StartBtn: "НАЧАТЬ 30 СЕК ИГРУ", g1Placeholder: "Печатайте сюда...",
+        g2Title: '<i class="fas fa-bullseye"></i> 2. CYBER NUMBER GUESSER // УГАДАЙ ЧИСЛО (1-100)', g2Sub: "УГАДАЙТЕ ЧИСЛО ОТ 1 ДО 100 (БЕЗ ЛИМИТА)",
+        g2Attempts: "ПОПЫТОК", g2StatusSearch: "СТАТУС: ПОИСК", g2BtnNew: "НОВАЯ ИГРА", g2HistInit: "> Система загадала число от 1 до 100...", g2Placeholder: "Число от 1 до 100...", g2BtnCheck: "ПРОВЕРИТЬ",
+        termTitle: '<i class="fas fa-terminal"></i> ИНТЕРАКТИВНЫЙ КИБЕР-ТЕРМИНАЛ', termHelp: "ВВЕДИТЕ 'help' ДЛЯ СПИСКА КОМАНД", termInit: "> СИСТЕМА КИБЕР-РЕЗЮМЕ ИНИЦИАЛИЗИРОВАНА v4.2...", termSub: "> Введите 'help' для просмотра доступных команд.", termPlaceholder: "Введите команду...", termRun: "ВЫПОЛНИТЬ",
+        btnGoSite: "ПЕРЕЙТИ НА САЙТ",
+        modalTitle: '<i class="fas fa-sliders-h"></i> РЕДАКТИРОВАНИЕ РЕЗЮМЕ', modalPersonal: "ЛИЧНЫЕ ДАННЫЕ", modalName: "ФИО", modalJob: "Профессия / Должность", modalBio: "О себе", modalEmail: "Эл. почта", modalPhone: "Телефон", modalLoc: "Адрес", modalSkills: "НАВЫКИ (Название:Процент, через запятую)", modalExp: "ОПЫТ РАБОТЫ (JSON)", modalCancel: "ОТМЕНА", modalSave: "СОХРАНИТЬ И ОБНОВИТЬ"
+      },
+      en: {
+        soundOn: "SOUND: ON", soundOff: "SOUND: OFF",
+        btnEdit: "EDIT RESUME", btnPdf: "DOWNLOAD PDF",
+        secretPanel: "[ CLASSIFIED DATA PANEL ]", readyStatus: "READY TO WORK",
+        lvlLabel: "LEVEL", heroStatsTitle: '<i class="fas fa-shield-halved"></i> CHARACTER STATS',
+        hpLabel: '<i class="fas fa-heart text-cyber-pink"></i> ENERGY (HP)',
+        coffeeLabel: '<i class="fas fa-coffee text-cyber-cyan"></i> COFFEE LEVEL (MANA)',
+        xpLabel: '<i class="fas fa-bolt text-cyber-yellow"></i> EXPERIENCE (XP)',
+        statProblem: "PROBLEM SOLVING", statClean: "CODE CLEANLINESS", statArch: "SYSTEM ARCHITECTURE", statDebug: "DEBUGGING SPEED",
+        skillsTitle: '<i class="fas fa-code text-cyber-cyan mr-2"></i> SKILLS',
+        eduTitle: '<i class="fas fa-graduation-cap"></i> EDUCATION & ACHIEVEMENTS',
+        expTitle: '<i class="fas fa-briefcase text-cyber-pink mr-2"></i> WORK EXPERIENCE', timeLog: "TIME_LOG",
+        projectsTitle: '<i class="fas fa-project-diagram"></i> PROJECTS',
+        reviewsTitle: '<i class="fas fa-star"></i> CLIENT REVIEWS',
+        arcadeTitle: "🎮 CYBER ARCADE // GAMES ZONE",
+        g1Title: '<i class="fas fa-keyboard"></i> 1. CYBER TYPING TEST // TYPING SPEED', g1Sub: "TYPE IT TERMS WITHOUT MISTAKES",
+        g1Time: "TIME", g1Speed: "SPEED", g1Acc: "ACCURACY", g1StartText: "Click «START 30s GAME» to begin!", g1StartBtn: "START 30s GAME", g1Placeholder: "Type here...",
+        g2Title: '<i class="fas fa-bullseye"></i> 2. CYBER NUMBER GUESSER // GUESS NUMBER (1-100)', g2Sub: "GUESS THE NUMBER BETWEEN 1 AND 100",
+        g2Attempts: "ATTEMPTS", g2StatusSearch: "STATUS: SEARCHING", g2BtnNew: "START NEW GAME", g2HistInit: "> System has generated a number from 1 to 100...", g2Placeholder: "1-100...", g2BtnCheck: "CHECK",
+        termTitle: '<i class="fas fa-terminal"></i> INTERACTIVE CYBER TERMINAL', termHelp: "TYPE 'help' FOR COMMAND LIST", termInit: "> CYBER_RESUME SYSTEM INITIALIZED v4.2...", termSub: "> Type 'help' to see available commands.", termPlaceholder: "Type command...", termRun: "EXECUTE",
+        btnGoSite: "VISIT WEBSITE",
+        modalTitle: '<i class="fas fa-sliders-h"></i> EDIT RESUME DATA', modalPersonal: "PERSONAL DETAILS", modalName: "Full Name", modalJob: "Title / Position", modalBio: "Bio", modalEmail: "Email", modalPhone: "Phone", modalLoc: "Location", modalSkills: "SKILLS (Name:Percent, comma-separated)", modalExp: "WORK EXPERIENCE (JSON)", modalCancel: "CANCEL", modalSave: "SAVE & UPDATE"
+      }
+    };
+
+    let resumeData = {
+      profile: {
+        name: "МҰХАММЕД ХУСЕЙН АБДУРАХМАН",
+        title: {
+          kk: "STUDENT UNIVERSITY OF TASHENEV & COMPUTER SCIENCE",
+          ru: "СТУДЕНТ УНИВЕРСИТЕТА ТАШЕНЕВА & COMPUTER SCIENCE",
+          en: "STUDENT UNIVERSITY OF TASHENEV & COMPUTER SCIENCE"
+        },
+        lvl: 99,
+        avatar: "abo.JPG",
+        bio: {
+          kk: "(Болашақ) Интерактивті веб-қосымшалар, Алгоритмдер мен жүйелерді жобалау, Ғылыми-зерттеу және жобалау жұмыстары және жоғары жүктемелі жүйелерді әзірлеуге маманданған бағдарламашы.",
+          ru: "(Будущий) Программист, специализирующийся на интерактивных веб-приложениях, проектировании алгоритмов и систем, научно-исследовательских работах и высоконагруженных системах.",
+          en: "(Future) Software developer specializing in interactive web applications, algorithm & system design, R&D projects, and high-load architecture."
+        },
+        email: "abokhusein@gmail.com",
+        phone: "+7 (706) 620-0772",
+        location: {
+          kk: "Шымкент, Қазақстан",
+          ru: "Шымкент, Казахстан",
+          en: "Shymkent, Kazakhstan"
+        },
+        github: "https://github.com/gcode01-rgb"
+      },
+      skills: [
+        { name: "JavaScript / TypeScript", level: 95, icon: "fab fa-js" },
+        { name: "React / Next.js", level: 92, icon: "fab fa-react" },
+        { name: "Python / Django / FastAPI", level: 88, icon: "fab fa-python" },
+        { name: "Node.js & Express", level: 86, icon: "fab fa-node-js" },
+        { name: "Cyber Security & Web Audit", level: 84, icon: "fas fa-user-shield" },
+        { name: "Tailwind CSS & Cyber UI", level: 98, icon: "fas fa-paint-brush" },
+        { name: "Docker & DevOps", level: 82, icon: "fab fa-docker" }
+      ],
+      experience: {
+        kk: [
+          { role: "Web Developer", company: "AboSheikh", period: "2024 - 2025", desc: "Үйлену той, мерейтой немесе туған күнге арналған интерактивті онлайн шақыртулар. Инстаграм дүкендерге арналған каталог-сайттар. WhatsApp-қа тікелей тапсырыс түседі. Жақындарыңызға ерекше сыйлық - суреттер мен видео қосылған жеке веб-парақша." },
+          { role: "Technical Safety", company: "№11 мектеп", period: "2025 - 2026", desc: "Мектеп техникаларына жауаптылық: аппаратура, компьютер, камера, принтер жөндеу, мерекелік кештерде аппаратураны, LED экранды басқару." },
+          { role: "Кез келген тапсырма", company: "Khussein Abdurakhman", period: "2022 - қазірге дейін", desc: "Техникалық және IT бағытындағы әртүрлі жеке тапсырыстар мен міндеттерді орындау." }
+        ],
+        ru: [
+          { role: "Web Developer", company: "AboSheikh", period: "2024 - 2025", desc: "Интерактивные онлайн-пригласительные на свадебные тои, юбилеи и дни рождения. Сайты-каталоги для Instagram-магазинов с прямой отправкой заказов в WhatsApp. Персональные веб-страницы с фото и видео." },
+          { role: "Technical Safety", company: "Школа №11", period: "2025 - 2026", desc: "Ответственный за школьную технику: ремонт оборудования, компьютеров, камер, принтеров. Управление аппаратурой и LED-экраном на мероприятиях." },
+          { role: "Разнообразные задачи", company: "Khussein Abdurakhman", period: "2022 - по н.в.", desc: "Выполнение различных частных заказов и задач в сфере IT и техники." }
+        ],
+        en: [
+          { role: "Web Developer", company: "AboSheikh", period: "2024 - 2025", desc: "Interactive online invitations for weddings and birthdays. Catalog websites for Instagram stores with direct WhatsApp ordering. Customized photo/video web pages." },
+          { role: "Technical Safety", company: "School №11", period: "2025 - 2026", desc: "Responsible for school hardware: repairing computers, cameras, and printers. Operating audio systems and LED screens during major events." },
+          { role: "Freelance Tasks", company: "Khussein Abdurakhman", period: "2022 - Present", desc: "Executing custom IT and technical projects for individual clients." }
+        ]
+      },
+      education: {
+        kk: [
+          { degree: "KKK колледжі", school: "Есептеу техникасы және ақпараттық технология", year: "2022 - 2025", gpa: "GPA: 3.6 / 4.0 | WorldSkills 3-орын" },
+          { degree: "TASHENEV UNIVERSITY", school: "Жасанды интеллект және инновациялау", year: "2026", gpa: "Студент" }
+        ],
+        ru: [
+          { degree: "Колледж ККК", school: "Вычислительная техника и информ. технологии", year: "2022 - 2025", gpa: "GPA: 3.6 / 4.0 | WorldSkills 3-е место" },
+          { degree: "TASHENEV UNIVERSITY", school: "Искусственный интеллект и инновации", year: "2026", gpa: "Студент" }
+        ],
+        en: [
+          { degree: "KKK College", school: "Computer Science & Information Technology", year: "2022 - 2025", gpa: "GPA: 3.6 / 4.0 | WorldSkills 3rd place" },
+          { degree: "TASHENEV UNIVERSITY", school: "Artificial Intelligence & Innovation", year: "2026", gpa: "Student" }
+        ]
+      },
+      projects: {
+        kk: [
+          { title: "Ps5 Arenda Shymkent", category: "web", desc: "Шымкенттегі ең арзан сапалы плейстейшн5, үйіңізде тегін доставкамен алдырта аласыз.", tech: ["Tailwind", "JavaScript", "HTML"], link: "https://gcode01-rgb.github.io/Ps5ArendaShym/" },
+          { title: "HackTerminal UI", category: "ai", desc: "Браузер арқылы жүйелік командаларды және AI-ассистентті басқаратын веб-терминал.", tech: ["Python", "FastAPI", "OpenAI"], link: "#" },
+          { title: "Quantum Vault Security", category: "ai", desc: "Деректерді шифрлау және кибершабуылдардан қорғауға арналған модульдік жүйе.", tech: ["TypeScript", "Web Crypto API"], link: "#" },
+          { title: "KazSynth Audio Engine", category: "web", desc: "Web Audio API негізінде жасалған браузерлік интерактивті синтезатор.", tech: ["JavaScript", "Web Audio API"], link: "#" }
+        ],
+        ru: [
+          { title: "Ps5 Arenda Shymkent", category: "web", desc: "Самая доступная аренда PlayStation 5 в Шымкенте с бесплатной доставкой на дом.", tech: ["Tailwind", "JavaScript", "HTML"], link: "https://gcode01-rgb.github.io/Ps5ArendaShym/" },
+          { title: "HackTerminal UI", category: "ai", desc: "Веб-терминал для управления системными командами и AI-ассистентом через браузер.", tech: ["Python", "FastAPI", "OpenAI"], link: "#" },
+          { title: "Quantum Vault Security", category: "ai", desc: "Модульная система для шифрования данных и защиты от кибератак.", tech: ["TypeScript", "Web Crypto API"], link: "#" },
+          { title: "KazSynth Audio Engine", category: "web", desc: "Браузерный интерактивный синтезатор на базе Web Audio API.", tech: ["JavaScript", "Web Audio API"], link: "#" }
+        ],
+        en: [
+          { title: "Ps5 Arenda Shymkent", category: "web", desc: "Top quality PlayStation 5 rental service in Shymkent with free home delivery.", tech: ["Tailwind", "JavaScript", "HTML"], link: "https://gcode01-rgb.github.io/Ps5ArendaShym/" },
+          { title: "HackTerminal UI", category: "ai", desc: "Browser-based web terminal to control system commands and AI assistant.", tech: ["Python", "FastAPI", "OpenAI"], link: "#" },
+          { title: "Quantum Vault Security", category: "ai", desc: "Modular system for data encryption and cyber attack protection.", tech: ["TypeScript", "Web Crypto API"], link: "#" },
+          { title: "KazSynth Audio Engine", category: "web", desc: "Browser-based interactive synthesizer powered by Web Audio API.", tech: ["JavaScript", "Web Audio API"], link: "#" }
+        ]
+      },
+      reviews: {
+        kk: [
+          { author: "Арман Таласов", role: "Үйлену той иесі", rating: "5.0 ★★★★★", text: "Або бізге керемет онлайн шақырту жасап берді. Қонақтардың бәрі қызығып, таңғалды! Тапсырыс өте жылдам орындалды." },
+          { author: "Динара Ысқақова", role: "Кәсіпкер / Дүкен иесі", rating: "5.0 ★★★★★", text: "Каталог-сайттың арқасында клиенттер тапсырысты бірден WhatsApp-қа жіберетін болды. Өте ыңғайлы!" }
+        ],
+        ru: [
+          { author: "Арман Таласов", role: "Организатор свадебного тоя", rating: "5.0 ★★★★★", text: "Або сделал потрясающее онлайн-пригласительное. Все гости были в восторге! Заказ выполнил невероятно быстро." },
+          { author: "Динара Искакова", role: "Предприниматель / Владелец магазина", rating: "5.0 ★★★★★", text: "Благодаря сайту-каталогу клиенты сразу отправляют заказы в WhatsApp. Очень удобно!" }
+        ],
+        en: [
+          { author: "Arman Talasov", role: "Wedding Host", rating: "5.0 ★★★★★", text: "Abo created an amazing online invitation for us. All the guests were surprised and impressed! Delivered very fast." },
+          { author: "Dinara Iskakova", role: "Entrepreneur / Shop Owner", rating: "5.0 ★★★★★", text: "Thanks to the catalog website, clients now place orders straight to my WhatsApp. Super convenient!" }
+        ]
+      }
+    };
+
+    let audioEnabled = true;
+    let audioCtx = null;
+
+    function playBeep(freq = 800, type = 'sine', duration = 0.05) {
+      if (!audioEnabled) return;
+      try {
+        if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        if (audioCtx.state === 'suspended') audioCtx.resume();
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.type = type;
+        osc.frequency.value = freq;
+        gain.gain.setValueAtTime(0.05, audioCtx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + duration);
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+        osc.start();
+        osc.stop(audioCtx.currentTime + duration);
+      } catch (e) {}
+    }
+
+    function toggleAudio() {
+      audioEnabled = !audioEnabled;
+      const t = i18n[currentLang];
+      document.getElementById("soundText").innerText = audioEnabled ? t.soundOn : t.soundOff;
+      document.getElementById("soundIcon").className = audioEnabled ? "fas fa-volume-up" : "fas fa-volume-mute";
+    }
+
+    document.addEventListener('click', (e) => {
+      if (e.target.closest('button, a, input')) {
+        playBeep(600, 'square', 0.04);
+      }
+    });
+
+    // 🌐 ТІЛДІ АУЫСТЫРУ ФУНКЦИЯСЫ
+    function setLanguage(lang) {
+      currentLang = lang;
+      
+      // Батырмалардың белсенділігін өңдеу
+      ['kk', 'ru', 'en'].forEach(l => {
+        const btn = document.getElementById(`lang-${l}`);
+        if (l === lang) {
+          btn.className = "px-2.5 py-1.5 bg-cyber-cyan text-black transition";
+        } else {
+          btn.className = "px-2.5 py-1.5 text-cyber-cyan hover:bg-cyber-cyan/20 transition border-l border-r border-cyber-cyan/30";
+        }
+      });
+
+      const t = i18n[lang];
+
+      // Текстілік элементтерді ауыстыру
+      document.getElementById("soundText").innerText = audioEnabled ? t.soundOn : t.soundOff;
+      document.getElementById("txt-btn-edit").innerText = t.btnEdit;
+      document.getElementById("txt-btn-pdf").innerText = t.btnPdf;
+      document.getElementById("txt-secret-panel").innerText = t.secretPanel;
+      document.getElementById("txt-ready-status").innerHTML = `<span class="w-2 h-2 rounded-full bg-cyber-green animate-ping"></span> ${t.readyStatus}`;
+      document.getElementById("txt-lvl-label").innerText = t.lvlLabel;
+
+      document.getElementById("txt-hero-stats-title").innerHTML = t.heroStatsTitle;
+      document.getElementById("txt-hp-label").innerHTML = t.hpLabel;
+      document.getElementById("txt-coffee-label").innerHTML = t.coffeeLabel;
+      document.getElementById("txt-xp-label").innerHTML = t.xpLabel;
+
+      document.getElementById("txt-stat-problem").innerText = t.statProblem;
+      document.getElementById("txt-stat-clean").innerText = t.statClean;
+      document.getElementById("txt-stat-arch").innerText = t.statArch;
+      document.getElementById("txt-stat-debug").innerText = t.statDebug;
+
+      document.getElementById("txt-skills-title").innerHTML = t.skillsTitle;
+      document.getElementById("txt-edu-title").innerHTML = t.eduTitle;
+      document.getElementById("txt-exp-title").innerHTML = t.expTitle;
+      document.getElementById("txt-time-log").innerText = t.timeLog;
+      document.getElementById("txt-projects-title").innerHTML = t.projectsTitle;
+      document.getElementById("txt-reviews-title").innerHTML = t.reviewsTitle;
+
+      document.getElementById("txt-arcade-title").innerText = t.arcadeTitle;
+      document.getElementById("txt-g1-title").innerHTML = t.g1Title;
+      document.getElementById("txt-g1-sub").innerText = t.g1Sub;
+      document.getElementById("txt-g1-time").innerText = t.g1Time;
+      document.getElementById("txt-g1-speed").innerText = t.g1Speed;
+      document.getElementById("txt-g1-acc").innerText = t.g1Acc;
+      document.getElementById("wordDisplay").innerText = t.g1StartText;
+      document.getElementById("startGameBtn").innerText = t.g1StartBtn;
+      document.getElementById("gameInput").placeholder = t.g1Placeholder;
+
+      document.getElementById("txt-g2-title").innerHTML = t.g2Title;
+      document.getElementById("txt-g2-sub").innerText = t.g2Sub;
+      document.getElementById("txt-g2-attempts").innerText = t.g2Attempts;
+      document.getElementById("codeStatus").innerText = t.g2StatusSearch;
+      document.getElementById("txt-g2-btn-new").innerText = t.g2BtnNew;
+      document.getElementById("codeHistory").innerHTML = `<p class="text-gray-500">${t.g2HistInit}</p>`;
+      document.getElementById("codeGuessInput").placeholder = t.g2Placeholder;
+      document.getElementById("txt-g2-btn-check").innerText = t.g2BtnCheck;
+
+      document.getElementById("txt-term-title").innerHTML = t.termTitle;
+      document.getElementById("txt-term-help").innerText = t.termHelp;
+      document.getElementById("txt-term-init").innerText = t.termInit;
+      document.getElementById("txt-term-sub").innerText = t.termSub;
+      document.getElementById("terminalInput").placeholder = t.termPlaceholder;
+      document.getElementById("txt-term-run").innerText = t.termRun;
+
+      document.getElementById("txt-modal-title").innerHTML = t.modalTitle;
+      document.getElementById("txt-modal-personal").innerText = t.modalPersonal;
+      document.getElementById("txt-modal-name").innerText = t.modalName;
+      document.getElementById("txt-modal-job").innerText = t.modalJob;
+      document.getElementById("txt-modal-bio").innerText = t.modalBio;
+      document.getElementById("txt-modal-email").innerText = t.modalEmail;
+      document.getElementById("txt-modal-phone").innerText = t.modalPhone;
+      document.getElementById("txt-modal-loc").innerText = t.modalLoc;
+      document.getElementById("txt-modal-skills").innerText = t.modalSkills;
+      document.getElementById("txt-modal-exp").innerText = t.modalExp;
+      document.getElementById("txt-modal-cancel").innerText = t.modalCancel;
+      document.getElementById("txt-modal-save").innerText = t.modalSave;
+
+      renderResume();
+      playBeep(950, 'sine', 0.04);
+    }
+
+    function renderResume() {
+      const p = resumeData.profile;
+      document.getElementById("displayName").innerText = p.name;
+      document.getElementById("displayName").setAttribute("data-text", p.name);
+      document.getElementById("displayTitle").innerText = typeof p.title === 'object' ? p.title[currentLang] : p.title;
+      document.getElementById("displayLvl").innerText = p.lvl;
+      document.getElementById("displayAvatar").src = p.avatar;
+      document.getElementById("displayBio").innerText = typeof p.bio === 'object' ? p.bio[currentLang] : p.bio;
+      document.getElementById("displayEmail").innerText = p.email;
+      document.getElementById("linkEmail").href = "mailto:" + p.email;
+      document.getElementById("displayPhone").innerText = p.phone;
+      document.getElementById("linkPhone").href = "tel:" + p.phone;
+      document.getElementById("displayLocation").innerText = typeof p.location === 'object' ? p.location[currentLang] : p.location;
+
+      document.getElementById("skillsContainer").innerHTML = resumeData.skills.map(skill => `
+        <div class="space-y-1">
+          <div class="flex justify-between text-xs">
+            <span class="text-gray-300 font-bold flex items-center gap-2">
+              <i class="${skill.icon || 'fas fa-terminal'} text-cyber-cyan"></i> ${skill.name}
+            </span>
+            <span class="text-cyber-cyan font-bold">${skill.level}%</span>
+          </div>
+          <div class="w-full h-2 bg-gray-900 border border-cyber-cyan/30 p-0.5">
+            <div class="h-full bg-cyber-cyan" style="width: ${skill.level}%"></div>
+          </div>
+        </div>
+      `).join('');
+
+      const eduList = resumeData.education[currentLang] || resumeData.education.kk;
+      document.getElementById("educationContainer").innerHTML = eduList.map(edu => `
+        <div class="bg-cyber-dim p-3 border-l-2 border-cyber-cyan space-y-1">
+          <div class="text-sm font-bold text-white">${edu.degree}</div>
+          <div class="text-xs text-cyber-cyan">${edu.school}</div>
+          <div class="flex justify-between text-xs text-gray-400 pt-1">
+            <span>${edu.year}</span>
+            <span class="text-cyber-yellow">${edu.gpa}</span>
+          </div>
+        </div>
+      `).join('');
+
+      const expList = resumeData.experience[currentLang] || resumeData.experience.kk;
+      document.getElementById("experienceContainer").innerHTML = expList.map(exp => `
+        <div class="relative group">
+          <div class="absolute -left-[39px] top-1.5 w-4 h-4 bg-cyber-card border-2 border-cyber-pink rounded-full group-hover:bg-cyber-pink transition"></div>
+          <div class="space-y-1">
+            <div class="flex flex-wrap justify-between items-start">
+              <h3 class="font-bold text-white text-base">${exp.role}</h3>
+              <span class="text-xs text-cyber-pink font-mono px-2 py-0.5 border border-cyber-pink/30 bg-cyber-pink/10 clip-corner-sm">
+                ${exp.period}
+              </span>
+            </div>
+            <div class="text-xs text-cyber-cyan font-semibold mb-2">${exp.company}</div>
+            <p class="text-xs text-gray-300 leading-relaxed">${exp.desc}</p>
+          </div>
+        </div>
+      `).join('');
+
+      renderProjects('all');
+
+      const revList = resumeData.reviews[currentLang] || resumeData.reviews.kk;
+      document.getElementById("reviewsContainer").innerHTML = revList.map(r => `
+        <div class="bg-cyber-dim border border-gray-800 p-4 clip-corner-sm space-y-2">
+          <div class="flex justify-between items-center">
+            <h4 class="font-bold text-sm text-white">${r.author}</h4>
+            <span class="text-xs text-cyber-yellow font-bold">${r.rating}</span>
+          </div>
+          <div class="text-[11px] text-cyber-cyan">${r.role}</div>
+          <p class="text-xs text-gray-300 italic">"${r.text}"</p>
+        </div>
+      `).join('');
+    }
+
+    function renderProjects(categoryFilter = 'all') {
+      const container = document.getElementById("projectsContainer");
+      const projList = resumeData.projects[currentLang] || resumeData.projects.kk;
+      const filtered = categoryFilter === 'all' 
+        ? projList 
+        : projList.filter(p => p.category === categoryFilter);
+
+      const btnGo = i18n[currentLang].btnGoSite;
+
+      container.innerHTML = filtered.map(proj => {
+        const hasLink = proj.link && proj.link !== "#";
+        return `
+          <div class="bg-cyber-dim border border-gray-800 p-4 hover:border-cyber-green transition flex flex-col justify-between clip-corner-sm space-y-3 group">
+            <div class="space-y-2">
+              <div class="flex justify-between items-center">
+                <h3 class="font-bold text-sm text-white group-hover:text-cyber-green transition">${proj.title}</h3>
+              </div>
+              <p class="text-xs text-gray-400 leading-normal">${proj.desc}</p>
+            </div>
+
+            <div class="space-y-3 pt-2 border-t border-gray-800/60">
+              <div class="flex flex-wrap gap-1">
+                ${proj.tech.map(t => `<span class="text-[10px] bg-cyber-card text-cyber-green px-1.5 py-0.5 border border-cyber-green/30">${t}</span>`).join('')}
+              </div>
+
+              ${hasLink ? `
+                <a href="${proj.link}" target="_blank" class="inline-flex items-center justify-center gap-2 w-full py-1.5 px-3 bg-cyber-green/10 border border-cyber-green text-cyber-green font-bold text-xs hover:bg-cyber-green hover:text-black transition clip-corner-sm">
+                  <span>${btnGo}</span>
+                  <i class="fas fa-arrow-right text-[10px]"></i>
+                </a>
+              ` : ''}
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function filterProjects(cat) {
+      renderProjects(cat);
+      playBeep(750, 'sine', 0.05);
+    }
+
+    /* GAME 1: TYPING GAME SCRIPT */
+    const gameWords = ["JAVASCRIPT", "CYBERPUNK", "HARDWARE", "AQUISITION", "ALGORITHM", "TERMINAL", "DEVELOPER", "SHYMKENT", "LED_SCREEN", "TASHENEV", "COMPUTER", "NETWORK"];
+    let gameTimerInterval = null;
+    let gameTimeLeft = 30;
+    let scoreWords = 0;
+
+    function startTypingGame() {
+      gameTimeLeft = 30;
+      scoreWords = 0;
+      document.getElementById("gameTimer").innerText = "30s";
+      document.getElementById("gameWpm").innerText = "0 WPM";
+      document.getElementById("gameInput").disabled = false;
+      document.getElementById("gameInput").value = "";
+      document.getElementById("gameInput").focus();
+      document.getElementById("startGameBtn").disabled = true;
+
+      showNextWord();
+
+      clearInterval(gameTimerInterval);
+      gameTimerInterval = setInterval(() => {
+        gameTimeLeft--;
+        document.getElementById("gameTimer").innerText = gameTimeLeft + "s";
+        if (gameTimeLeft <= 0) {
+          endTypingGame();
+        }
+      }, 1000);
+    }
+
+    function showNextWord() {
+      const word = gameWords[Math.floor(Math.random() * gameWords.length)];
+      document.getElementById("wordDisplay").innerText = word;
+      document.getElementById("gameInput").value = "";
+    }
+
+    function checkGameInput() {
+      const target = document.getElementById("wordDisplay").innerText;
+      const input = document.getElementById("gameInput").value.trim().toUpperCase();
+
+      if (input === target) {
+        scoreWords++;
+        playBeep(900, 'triangle', 0.05);
+        showNextWord();
+        const wpm = Math.round((scoreWords / (30 - gameTimeLeft || 1)) * 60);
+        document.getElementById("gameWpm").innerText = wpm + " WPM";
+      }
+    }
+
+    function endTypingGame() {
+      clearInterval(gameTimerInterval);
+      document.getElementById("gameInput").disabled = true;
+      document.getElementById("startGameBtn").disabled = false;
+      const finalWpm = Math.round((scoreWords / 30) * 60);
+      document.getElementById("wordDisplay").innerText = `GAME OVER! ${scoreWords} WORDS (${finalWpm} WPM)`;
+    }
+
+    /* GAME 2: CYBER NUMBER GUESSER */
+    let secretNum = 0;
+    let attemptsCount = 0;
+    let gameWon = false;
+
+    function initCodeBreaker() {
+      secretNum = Math.floor(Math.random() * 100) + 1;
+      attemptsCount = 0;
+      gameWon = false;
+      document.getElementById("codeAttemptsCount").innerText = attemptsCount;
+      document.getElementById("codeStatus").innerText = i18n[currentLang].g2StatusSearch;
+      document.getElementById("codeStatus").className = "text-xs text-cyber-cyan font-bold tracking-wider";
+      document.getElementById("codeHistory").innerHTML = `<p class="text-cyber-green">${i18n[currentLang].g2HistInit}</p>`;
+      document.getElementById("codeGuessInput").value = "";
+      document.getElementById("codeGuessInput").disabled = false;
+    }
+
+    function guessCode(e) {
+      e.preventDefault();
+      if (gameWon) return;
+
+      const input = document.getElementById("codeGuessInput");
+      const val = parseInt(input.value.trim());
+
+      if (isNaN(val) || val < 1 || val > 100) {
+        alert("1 - 100 !");
+        return;
+      }
+
+      attemptsCount++;
+      document.getElementById("codeAttemptsCount").innerText = attemptsCount;
+
+      const history = document.getElementById("codeHistory");
+      if (val === secretNum) {
+        gameWon = true;
+        history.innerHTML += `<p class="text-cyber-green font-bold">> [WIN!] ${val} 🔓 WINNER! (${attemptsCount} attempts)</p>`;
+        document.getElementById("codeStatus").innerText = "STATUS: SUCCESS!";
+        document.getElementById("codeStatus").className = "text-xs text-cyber-green font-bold tracking-wider animate-pulse";
+        document.getElementById("codeGuessInput").disabled = true;
+        playBeep(1200, 'triangle', 0.2);
+      } else if (val < secretNum) {
+        history.innerHTML += `<p class="text-cyber-yellow">> [${val}] -> 💡 HIGHER (Көбірек / Больше)!</p>`;
+        playBeep(400, 'sawtooth', 0.08);
+      } else {
+        history.innerHTML += `<p class="text-cyber-pink">> [${val}] -> 💡 LOWER (Азырақ / Меньше)!</p>`;
+        playBeep(400, 'sawtooth', 0.08);
+      }
+
+      input.value = "";
+      history.scrollTop = history.scrollHeight;
+    }
+
+    /* ИНТЕРАКТИВТІ КИБЕР-ТЕРМИНАЛ КОМАНДАЛАРЫ */
+    function handleTerminalCommand(e) {
+      e.preventDefault();
+      const input = document.getElementById("terminalInput");
+      const cmd = input.value.trim().toLowerCase();
+      const output = document.getElementById("terminalOutput");
+      if (!cmd) return;
+
+      playBeep(850, 'square', 0.03);
+
+      output.innerHTML += `<p class="text-cyber-cyan"><span class="text-cyber-pink">guest@cyber-resume:~$</span> ${cmd}</p>`;
+
+      const args = cmd.split(' ');
+      const mainCmd = args[0];
+      const colorArg = args[1];
+
+      let response = "";
+      switch (mainCmd) {
+        case 'help':
+          response = `Available Commands:
+  - <span class="text-cyber-yellow">skills</span>          : Skills & level
+  - <span class="text-cyber-yellow">projects</span>        : Portfolio projects
+  - <span class="text-cyber-yellow">contact</span>         : Contact information
+  - <span class="text-cyber-yellow">stats</span>           : RPG Character stats
+  - <span class="text-cyber-yellow">about</span>           : Short bio
+  - <span class="text-cyber-yellow">matrix [color]</span>  : 🎨 Matrix mode (red, blue, yellow, purple, cyan)
+  - <span class="text-cyber-yellow">coffee</span>          : ☕ Restore Coffee to 100%
+  - <span class="text-cyber-yellow">hire</span>            : 💼 Contact for work / project
+  - <span class="text-cyber-yellow">clear</span>           : Clear terminal`;
+          break;
+        case 'skills':
+          response = resumeData.skills.map(s => `  * ${s.name}: ${s.level}%`).join('<br>');
+          break;
+        case 'projects':
+          const plist = resumeData.projects[currentLang] || resumeData.projects.kk;
+          response = plist.map(p => `  * [${p.title}] - ${p.desc}`).join('<br>');
+          break;
+        case 'contact':
+          const p = resumeData.profile;
+          response = `  Email: ${p.email}<br>  Phone: ${p.phone}<br>  Location: ${typeof p.location === 'object' ? p.location[currentLang] : p.location}`;
+          break;
+        case 'stats':
+          response = `  LEVEL: ${resumeData.profile.lvl} | HP: 100/100 | COFFEE: 96% | XP: 9200/10000`;
+          break;
+        case 'about':
+          response = `  ${typeof resumeData.profile.bio === 'object' ? resumeData.profile.bio[currentLang] : resumeData.profile.bio}`;
+          break;
+
+        case 'matrix':
+          const body = document.body;
+          if (colorArg) {
+            const colorMap = {
+              green: '#00ff66', red: '#ff0055', pink: '#ff007f', blue: '#00aaff', cyan: '#00f3ff', yellow: '#ffe600', purple: '#a855f7', orange: '#ff6600'
+            };
+            const selectedColor = colorMap[colorArg] || colorArg;
+            body.classList.add('matrix-mode');
+            body.style.setProperty('--matrix-color', selectedColor);
+
+            response = `<span style="color: ${selectedColor}" class="font-bold">> [MATRIX COLOR] ${colorArg.toUpperCase()} MODE ACTIVE! 🎨</span>`;
+            playBeep(1100, 'sawtooth', 0.2);
+          } else {
+            body.classList.toggle('matrix-mode');
+            body.style.removeProperty('--matrix-color');
+            const isMatrix = body.classList.contains('matrix-mode');
+
+            response = isMatrix 
+              ? `<span class="text-cyber-green font-bold">> [MATRIX REBOOT] MATRIX MODE ACTIVE! 🟢</span>`
+              : `<span class="text-cyber-cyan">> [MATRIX EXIT] NORMAL MODE RESTORED.</span>`;
+            playBeep(1100, 'sawtooth', 0.2);
+          }
+          break;
+
+        case 'coffee':
+          document.getElementById('displayManaVal').innerText = "100%";
+          document.getElementById('displayManaBar').style.width = "100%";
+          response = `<span class="text-cyber-yellow font-bold">☕ [COFFEE BOOST] MANA RESTORED TO 100%!</span>`;
+          playBeep(1500, 'sine', 0.15);
+          break;
+
+        case 'hire':
+          response = `<span class="text-cyber-green font-bold">🎉 [EXCELLENT CHOICE!] WhatsApp: <a href="https://wa.me/77066200772" target="_blank" class="underline text-cyber-cyan">+7 (706) 620-0772</a></span>`;
+          playBeep(1300, 'triangle', 0.25);
+          break;
+
+        case 'clear':
+          output.innerHTML = "";
+          input.value = "";
+          return;
+        default:
+          response = `Command not found: '<span class="text-cyber-pink">${cmd}</span>'. Type '<span class="text-cyber-yellow">help</span>' for help.`;
+      }
+
+      output.innerHTML += `<p class="text-gray-300 pb-1">${response}</p>`;
+      input.value = "";
+      output.scrollTop = output.scrollHeight;
+    }
+
+    /* ӨҢДЕУ ПАНЕЛІ */
+    function toggleEditDrawer() {
+      const modal = document.getElementById("editModal");
+      modal.classList.toggle("hidden");
+
+      if (!modal.classList.contains("hidden")) {
+        document.getElementById("editName").value = resumeData.profile.name;
+        document.getElementById("editTitle").value = typeof resumeData.profile.title === 'object' ? resumeData.profile.title[currentLang] : resumeData.profile.title;
+        document.getElementById("editBio").value = typeof resumeData.profile.bio === 'object' ? resumeData.profile.bio[currentLang] : resumeData.profile.bio;
+        document.getElementById("editEmail").value = resumeData.profile.email;
+        document.getElementById("editPhone").value = resumeData.profile.phone;
+        document.getElementById("editLocation").value = typeof resumeData.profile.location === 'object' ? resumeData.profile.location[currentLang] : resumeData.profile.location;
+
+        const rawSkills = resumeData.skills.map(s => `${s.name}:${s.level}`).join(', ');
+        document.getElementById("editSkillsRaw").value = rawSkills;
+
+        const expList = resumeData.experience[currentLang] || resumeData.experience.kk;
+        document.getElementById("editExperienceRaw").value = JSON.stringify(expList, null, 2);
+      }
+    }
+
+    function saveResumeData() {
+      try {
+        resumeData.profile.name = document.getElementById("editName").value;
+        resumeData.profile.title[currentLang] = document.getElementById("editTitle").value;
+        resumeData.profile.bio[currentLang] = document.getElementById("editBio").value;
+        resumeData.profile.email = document.getElementById("editEmail").value;
+        resumeData.profile.phone = document.getElementById("editPhone").value;
+        resumeData.profile.location[currentLang] = document.getElementById("editLocation").value;
+
+        const skillsRaw = document.getElementById("editSkillsRaw").value;
+        if (skillsRaw) {
+          resumeData.skills = skillsRaw.split(',').map(item => {
+            const [name, level] = item.split(':');
+            return {
+              name: name ? name.trim() : 'Skill',
+              level: level ? parseInt(level.trim()) || 80 : 80,
+              icon: 'fas fa-code'
+            };
+          });
+        }
+
+        const expRaw = document.getElementById("editExperienceRaw").value;
+        if (expRaw) {
+          resumeData.experience[currentLang] = JSON.parse(expRaw);
+        }
+
+        renderResume();
+        toggleEditDrawer();
+        playBeep(1000, 'sine', 0.1);
+      } catch (err) {
+        alert("JSON error!");
+      }
+    }
+
+    window.onload = function() {
+      setLanguage('kk');
+      initCodeBreaker();
+    };
+  </script>
+</body>
+</html>
